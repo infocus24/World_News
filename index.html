@@ -26,6 +26,7 @@
             --radius-sm: 10px;
             --radius-md: 20px;
             --radius-lg: 35px;
+            --radius-square: 0px; 
             --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
@@ -103,6 +104,24 @@
             align-items: center;
             padding: 16px 0;
         }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .header-site-links, .footer-site-links {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        
+        .header-site-links a, .footer-site-links a { transition: var(--transition-smooth); }
+        .header-site-links a:hover, .footer-site-links a:hover { color: var(--accent-primary); }
 
         .logo {
             font-size: 26px;
@@ -217,13 +236,13 @@
         }
         .section-title::after { content: ''; flex-grow: 1; height: 1px; background: var(--border-color); }
 
-       /* --- PREMIUM DROPDOWN ENGINE (UPDATED SIZE & ALIGNMENT) --- */
+        /* --- PREMIUM DROPDOWN ENGINE --- */
         .country-dropdown-wrapper {
             margin-bottom: 35px;
             position: relative;
             width: 100%;
-            max-width: 320px; /* হরিজন্টাল সাইজ ছোট করার জন্য সর্বোচ্চ প্রস্থ নির্ধারণ */
-            margin-right: auto; /* বাম পাশে সেট করার জন্য */
+            max-width: 320px;
+            margin-right: auto;
         }
 
         .country-dropdown-wrapper select {
@@ -258,6 +277,63 @@
             top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
+        }
+
+        /* --- CATEGORY FILTERS WITH SCROLL ARROWS --- */
+        .category-nav-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .nav-arrow-btn {
+            background: var(--bg-surface-solid);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            cursor: pointer;
+            border-radius: var(--radius-square);
+            color: var(--text-primary);
+            box-shadow: var(--glass-shadow);
+        }
+        .nav-arrow-btn:hover { background: var(--accent-primary); color: #fff; }
+
+        .category-filters-wrapper {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+            flex-grow: 1;
+        }
+        .category-filters-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .home-cat-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: var(--radius-square);
+            background: var(--bg-surface-solid);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            box-shadow: var(--glass-shadow);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .home-cat-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+        .home-cat-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 8px 20px -6px rgba(99, 102, 241, 0.4);
         }
 
         /* Category Grid */
@@ -344,8 +420,9 @@
         /* --- FOOTER NETWORK HUB --- */
         .footer-wrapper { padding: 30px 0; border-top: 1px solid var(--border-color); margin-top: 5px; }
         .footer-container { display: grid; grid-template-columns: 1fr; text-align: center; gap: 24px; }
-        .footer-left { font-size: 12px; color: var(--text-muted); grid-row: 2; }
+        .footer-left { font-size: 13px; color: var(--text-muted); grid-row: 2; }
         .footer-right-hub { display: flex; flex-direction: column; align-items: center; gap: 10px; grid-row: 1; }
+        
         .hub-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.8px; }
         .hub-networks-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 400px; }
         .network-item {
@@ -373,25 +450,28 @@
         @media(max-width: 768px) {
             .center-headline { font-size: 24px; }
             .header-top { flex-direction: column; gap: 12px; }
+            .header-left { align-items: center; text-align: center; }
+            .header-site-links { justify-content: center; }
             .date-engine { text-align: center; border-left: none; padding-left: 0; }
             .category-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
             .portal-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+            .country-dropdown-wrapper { max-width: 100%; } 
         }
     </style>
-
-
-
-
 </head>
 <body>
 
     <header class="glass">
         <div class="container">
             <div class="header-top">
-                <a href="#" onclick="navigateToHome(event)" class="logo">
-                    <svg style="width:26px; height:26px; fill:var(--accent-primary);" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                    Chronicle Prime
-                </a>
+                <div class="header-left">
+                    <a href="#" onclick="navigateToHome(event)" class="logo">
+                        <svg style="width:26px; height:26px; fill:var(--accent-primary);" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        Chronicle Prime
+                    </a>
+                    <!-- Header Left Corner Links (Configurable in JS) -->
+                    <nav class="header-site-links" id="headerLinksPipeline"></nav>
+                </div>
                 
                 <div class="header-controls">
                     <div class="date-engine">
@@ -442,16 +522,24 @@
         <div id="homeLandingPage">
             <h2 class="section-title">Select Your Country</h2>
             
-            <!-- PREMIUM DROPDOWN BOX (NO EMOJI / NO SHORT FORM) -->
+            <!-- PREMIUM DROPDOWN BOX -->
             <div class="country-dropdown-wrapper">
                 <select id="countryDropdownPipeline" onchange="setActiveCountry(this.value)"></select>
             </div>
 
             <h2 class="section-title">Available Premium Categories</h2>
+            
+            <!-- HORIZONTAL CATEGORY FILTER BAR WITH SCROLL ARROWS -->
+            <div class="category-nav-container">
+                <button class="nav-arrow-btn" onclick="scrollCategories(-200)">&#10094;</button>
+                <div class="category-filters-wrapper" id="homeCategoryFiltersPipeline"></div>
+                <button class="nav-arrow-btn" onclick="scrollCategories(200)">&#10095;</button>
+            </div>
+
             <div class="category-grid" id="categoryGridPipeline"></div>
         </div>
 
-        <!-- SECOND LANDING PAGE (SUB-CATEGORIES FILTERS & PORTALS GRID) -->
+        <!-- SECOND LANDING PAGE -->
         <div id="newsLandingPage">
             <div class="back-btn-wrapper">
                 <button class="back-btn glass-solid" onclick="navigateToHome(event)">
@@ -462,7 +550,6 @@
             
             <h2 id="currentCategoryTitle" style="font-size: 22px; font-weight: 800; margin-bottom: 16px; border-left: 4px solid var(--accent-primary); padding-left: 12px; text-transform: capitalize;"></h2>
             
-            <!-- SUB-CATEGORIES SHOWN EXCLUSIVELY HERE -->
             <div class="sub-category-filters" id="subCategoryPipeline"></div>
             
             <div class="portal-grid" id="portalGridPipeline"></div>
@@ -482,11 +569,15 @@
     <footer class="footer-wrapper">
         <div class="container footer-container">
             <div class="footer-left">
-                <p>&copy; 2026 Chronicle Prime Portal. Engineered Premium Dashboard Matrix.</p>
+                <!-- Auto Updating Copyright Line -->
+                <p>Copyright &copy; <span id="autoYear"></span> | Chronicle Prime Portal ❤️All Rights Reserved.</p>
             </div>
             <div class="footer-right-hub">
                 <span class="hub-title">Quick Connected Networks</span>
                 <div class="hub-networks-grid" id="footerSocialNetworksPipeline"></div>
+                
+                <!-- Footer Right Corner Links (Configurable in JS) -->
+                <nav class="footer-site-links" id="footerLinksPipeline"></nav>
             </div>
         </div>
     </footer>
@@ -502,7 +593,17 @@
                 tickerDuration: "50s",
                 portalBadgeText: "Open This Site" 
             },
-            // ৫০টিরও বেশি দেশ (সম্পূর্ণ নাম এবং ফ্ল্যাগ ইমোজি ডাটাবেজে থাকলেও প্রদর্শনের সময় শুধুমাত্র নাম দেখাবে)
+            
+            // Site Options Configuration Hub (Link Editor)
+sitePages: [
+    { name: "Privacy Policy", url: "#" },
+    { name: "FAQ", url: "#" },
+    { name: "Disclaimer", url: "#" },
+    { name: "Terms & Conditions", url: "#" },
+    { name: "About Us", url: "#" },
+    { name: "Contact Us", url: "#" }
+],
+
             countries: [
                 { id: "Argentina", name: "Argentina" },
                 { id: "Australia", name: "Australia" },
@@ -572,10 +673,9 @@
                 { id: "Jobs", name: "Jobs", icon: "💼", image: "https://plus.unsplash.com/premium_photo-1770310908404-4fecf6e0c3de?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDY1fHx8ZW58MHx8fHx8" },
                 { id: "Opinion", name: "Opinion", icon: "💬", image: "https://images.unsplash.com/photo-1598363431659-330370aaaa7b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fG9waW5pb25zfGVufDB8fDB8fHww" },
                 { id: "Videos", name: "Videos", icon: "📽️", image: "https://images.unsplash.com/photo-1490971688337-f2c79913ea7d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHNob3J0JTIwdmlkZW98ZW58MHx8MHx8fDA%3D" },
-                { id: "sports", name: "Coming Soon", icon: "⚽", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&h=400&fit=crop" },
-                { id: "sports", name: "Coming Soon", icon: "⚽", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&h=400&fit=crop" },
-                { id: "sports", name: "Coming Soon", icon: ";", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&h=400&fit=crop" }
-
+                { id: "sports1", name: "Coming Soon", icon: "⚽", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&h=400&fit=crop" },
+                { id: "sports2", name: "Coming Soon", icon: "⚽", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&h=400&fit=crop" },
+                { id: "sports3", name: "Coming Soon", icon: "⚽", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&h=400&fit=crop" }
             ],
             subCategories: [
                 { id: "all", name: "All Networks" },
@@ -584,30 +684,21 @@
                 { id: "tv", name: "Live TV Channels" }
             ],
             publications: [
-                // Bangladesh
                 { name: "Prothom Alo", logo: "https://media.prothomalo.com/prothomalo-bangla/2025-11-17/qix5skks/palo-bangla.svg", url: "https://prothomalo.com", country: "Bangladesh", category: "national", subCat: "newspaper" },
                 { name: "Jugantor", logo: "https://cdn.jugantor.com/uploads/settings/logo-black.png", url: "https://www.jugantor.com", country: "Bangladesh", category: "national", subCat: "newspaper" },
                 { name: "Dhaka Post", logo: "https://upload.wikimedia.org/wikipedia/commons/5/56/Dhaka_post.jpg", url: "https://www.dhakapost.com", country: "Bangladesh", category: "national", subCat: "online" },
                 { name: "Somoy TV", logo: "https://www.somoynews.tv/images/logo.png", url: "https://www.somoynews.tv", country: "Bangladesh", category: "national", subCat: "tv" },
                 { name: "Jamuna TV", logo: "https://www.jamuna.tv/images/logo.png", url: "https://www.jamuna.tv", country: "Bangladesh", category: "national", subCat: "tv" },
-                
-                // United States
-                { name: "The New York Times", logo: "https://img.icons8.com/ios-filled/120/new-york-times.png", url: "https://nytimes.com", country: "United States", category: "intl", subCat: "newspaper" },
-                { name: "CNN World", logo: "https://img.icons8.com/color/120/cnn.png", url: "https://edition.cnn.com", country: "United States", category: "intl", subCat: "tv" },
-                { name: "TechCrunch", logo: "https://img.icons8.com/color/120/techcrunch.png", url: "https://techcrunch.com", country: "United States", category: "tech", subCat: "online" },
+                { name: "The New York Times", logo: "https://img.icons8.com/ios-filled/120/new-york-times.png", url: "https://nytimes.com", country: "United States", category: "International", subCat: "newspaper" },
+                { name: "CNN World", logo: "https://img.icons8.com/color/120/cnn.png", url: "https://edition.cnn.com", country: "United States", category: "International", subCat: "tv" },
+                { name: "TechCrunch", logo: "https://img.icons8.com/color/120/techcrunch.png", url: "https://techcrunch.com", country: "United States", category: "Technology ", subCat: "online" },
                 { name: "ESPN", logo: "https://img.icons8.com/color/120/espn.png", url: "https://www.espn.com", country: "United States", category: "sports", subCat: "online" },
-
-                // United Kingdom
-                { name: "BBC News", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfru0NtHRDLE6cqhQrnTeVa_yNSnv6VUwWt3AS43GLvA&s=10", url: "https://www.bbc.com/news", country: "United Kingdom", category: "intl", subCat: "tv" },
-                { name: "The Guardian", logo: "https://img.icons8.com/ios-filled/120/the-guardian-newspaper.png", url: "https://theguardian.com", country: "United Kingdom", category: "intl", subCat: "newspaper" },
-                
-                // India
+                { name: "BBC News", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfru0NtHRDLE6cqhQrnTeVa_yNSnv6VUwWt3AS43GLvA&s=10", url: "https://www.bbc.com/news", country: "United Kingdom", category: "International", subCat: "tv" },
+                { name: "The Guardian", logo: "https://img.icons8.com/ios-filled/120/the-guardian-newspaper.png", url: "https://theguardian.com", country: "United Kingdom", category: "International", subCat: "newspaper" },
                 { name: "NDTV India", logo: "https://www.ndtv.com/static/images/ndtv_logo_layer.png", url: "https://www.ndtv.com", country: "India", category: "national", subCat: "tv" },
-                { name: "The Times of India", logo: "https://img.icons8.com/color/120/times-of-india.png", url: "https://timesofindia.indiatimes.com", country: "India", category: "intl", subCat: "newspaper" },
-                
-                // Myanmar
+                { name: "The Times of India", logo: "https://img.icons8.com/color/120/times-of-india.png", url: "https://timesofindia.indiatimes.com", country: "India", category: "International", subCat: "newspaper" },
                 { name: "TV Myanmar", logo: "https://www.ndtv.com/static/images/ndtv_logo_layer.png", url: "https://www.ndtv.com", country: "Myanmar", category: "national", subCat: "tv" },
-                { name: "The Times of Myanmar", logo: "https://img.icons8.com/color/120/times-of-india.png", url: "https://timesofindia.indiatimes.com", country: "Myanmar", category: "intl", subCat: "newspaper" }
+                { name: "The Times of Myanmar", logo: "https://img.icons8.com/color/120/times-of-india.png", url: "https://timesofindia.indiatimes.com", country: "Myanmar", category: "International", subCat: "newspaper" }
             ],
             tickerItems: [
                 "Matrix System Dynamic Core Online.",
@@ -626,6 +717,7 @@
         let SELECTED_COUNTRY = "Bangladesh"; 
         let CURRENT_CATEGORY = "";
         let SELECTED_SUB_CAT = "all";
+        let HOME_SELECTED_CATEGORY = "all"; 
 
         function initializeCalendarEngine() {
             const now = new Date();
@@ -639,14 +731,21 @@
             pipeline.style.animationDuration = DATABASE.speedSettings.tickerDuration;
         }
 
-        // ড্রপডাউন রেন্ডার করার ফাংশন (কোনো ইমোজি বা শর্ট ফর্ম থাকবে না)
         function renderCountrySelector() {
-            const pipeline = document.getElementById("countryDropdownPipeline");
-            pipeline.innerHTML = DATABASE.countries.map(country => `
-                <option value="${country.id}" ${country.id === SELECTED_COUNTRY ? 'selected' : ''}>
-                    ${country.name}
-                </option>
+    const pipeline = document.getElementById("countryDropdownPipeline");
+    pipeline.innerHTML = DATABASE.countries.map(country => 
+        `<option value="${country.id}" ${country.id === SELECTED_COUNTRY ? 'selected' : ''}>${country.name}</option>`
+    ).join('');
+}
+
+        // Render Policy & Site Links
+        function renderSiteLinks() {
+            const linksHtml = DATABASE.sitePages.map(page => `
+                <a href="${page.url}">${page.name}</a>
             `).join('');
+            
+            document.getElementById("headerLinksPipeline").innerHTML = linksHtml;
+            document.getElementById("footerLinksPipeline").innerHTML = linksHtml;
         }
 
         function setActiveCountry(countryId) {
@@ -654,9 +753,41 @@
             renderCategories(); 
         }
 
+        // SCROLL FUNCTION
+        function scrollCategories(amount) {
+            const container = document.getElementById('homeCategoryFiltersPipeline');
+            container.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+
+        function renderHomeCategoryFilters() {
+            const pipeline = document.getElementById("homeCategoryFiltersPipeline");
+            
+            let html = `<button class="home-cat-btn ${HOME_SELECTED_CATEGORY === 'all' ? 'active' : ''}" onclick="filterHomeCategories('all')">All Categories</button>`;
+            
+            html += DATABASE.categories.map(cat => `
+                <button class="home-cat-btn ${HOME_SELECTED_CATEGORY === cat.id ? 'active' : ''}" onclick="filterHomeCategories('${cat.id}')">
+                    ${cat.icon} ${cat.name}
+                </button>
+            `).join('');
+            
+            pipeline.innerHTML = html;
+        }
+
+        function filterHomeCategories(categoryId) {
+            HOME_SELECTED_CATEGORY = categoryId;
+            renderHomeCategoryFilters(); 
+            renderCategories(); 
+        }
+
         function renderCategories() {
             const pipeline = document.getElementById("categoryGridPipeline");
-            pipeline.innerHTML = DATABASE.categories.map(cat => `
+            
+            let categoriesToShow = DATABASE.categories;
+            if (HOME_SELECTED_CATEGORY !== 'all') {
+                categoriesToShow = DATABASE.categories.filter(c => c.id === HOME_SELECTED_CATEGORY);
+            }
+
+            pipeline.innerHTML = categoriesToShow.map(cat => `
                 <div class="category-card" onclick="loadSecondLandingPage('${cat.id}')">
                     <div class="category-bg-image" style="background-image: url('${cat.image}')"></div>
                     <div class="category-overlay"></div>
@@ -679,7 +810,6 @@
             const selectedCat = DATABASE.categories.find(c => c.id === categoryId);
             const selectedCountryObj = DATABASE.countries.find(c => c.id === SELECTED_COUNTRY);
             
-            // সাব-পেজের হেডিংয়েও কোনো দেশের ফ্ল্যাগ শো হবে না
             titleElement.innerHTML = `${selectedCountryObj.name} &raquo; ${selectedCat.icon} ${selectedCat.name}`;
 
             renderSubCategoryFilters();
@@ -784,7 +914,14 @@
             initializeCalendarEngine();
             initializeTicker();
             renderCountrySelector();
+            
+            // Render Configured Static Links and Setup Auto Year
+            renderSiteLinks();
+            document.getElementById("autoYear").textContent = new Date().getFullYear();
+            
+            renderHomeCategoryFilters(); 
             renderCategories();
+            
             renderFooterSocialHub();
 
             const fab = document.getElementById("backToTopFab");
